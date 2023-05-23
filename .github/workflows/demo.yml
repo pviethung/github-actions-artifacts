@@ -15,7 +15,7 @@ jobs:
   build:
     needs: lint
     outputs:
-      script-file-name: ${{steps.get-index-script.outputs.script-file}}
+      script-file: ${{steps.get-index-script.outputs.script-file}}
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -43,6 +43,6 @@ jobs:
       - name: Output content
         run: ls
       - name: Output index script after build
-        run: echo "${{needs.build.outputs.script-file-name}}"
+        run: echo "${{needs.build.outputs.script-file}}"
       - name: Deploy
         run: echo "Deploying..."
