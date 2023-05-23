@@ -6,6 +6,11 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
+      - name: Cache depencencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Lint code
@@ -15,11 +20,16 @@ jobs:
   build:
     needs: lint
     outputs:
-      script-file: ${{steps.publish.outputs.script-file}}
-    runs-on: ubuntu-latest
+      script-file: ${{ steps.publish.outputs.script-file }}
+    runs-on: ubuntu-latests
     steps:
       - name: Get code
         uses: actions/checkout@v3
+      - name: Cache depencencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Build code
@@ -43,6 +53,6 @@ jobs:
       - name: Output content
         run: ls
       - name: Output index script after build
-        run: echo "${{needs.build.outputs.script-file}}"
+        run: echo "${{ needs.build.outputs.script-file }}"
       - name: Deploy
         run: echo "Deploying..."
