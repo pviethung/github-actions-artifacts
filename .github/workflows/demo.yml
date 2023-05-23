@@ -15,7 +15,7 @@ jobs:
   build:
     needs: lint
     outputs:
-      script-file: ${{steps.get-index-script.outputs.script-file}}
+      script-file: ${{steps.publish.outputs.script-file}}
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -25,7 +25,7 @@ jobs:
       - name: Build code
         run: npm run build
       - name: Get index script
-        id: get-index-script
+        id: publish
         run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> '$GITHUB_OUTPUT' ';'
       - name: Upload artifact
         uses: actions/upload-artifact@v3
